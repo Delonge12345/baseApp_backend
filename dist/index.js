@@ -18,7 +18,7 @@ exports.HTTP_CODES = {
     BAD_REQUEST_400: 400,
     NOT_FOUND_404: 404,
 };
-//middleware
+//middlewares
 const jsonBodyMiddleware = express_1.default.json();
 exports.app.use(jsonBodyMiddleware);
 exports.app.use(cors({ origin: CLIENT_URL, credentials: true }));

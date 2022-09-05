@@ -20,7 +20,7 @@ export const HTTP_CODES = {
 
 }
 
-//middleware
+//middlewares
 const jsonBodyMiddleware = express.json()
 app.use(jsonBodyMiddleware)
 app.use(cors({origin: CLIENT_URL, credentials: true}))
