@@ -8,7 +8,8 @@ const express_1 = __importDefault(require("express"));
 const client = require("../databasepg");
 const cors = require("cors");
 const { PORT, CLIENT_URL } = require('../constants/index');
-const authRout = require('../routes/authRouter');
+const authRoute = require('../routes/authRouter');
+const cookieParser = require('cookie-parser');
 // const authRouter = require('../authRouter')
 exports.app = (0, express_1.default)();
 exports.HTTP_CODES = {
@@ -19,10 +20,10 @@ exports.HTTP_CODES = {
     NOT_FOUND_404: 404,
 };
 //middlewares
-const jsonBodyMiddleware = express_1.default.json();
-exports.app.use(jsonBodyMiddleware);
+exports.app.use(express_1.default.json());
+exports.app.use(cookieParser());
 exports.app.use(cors({ origin: CLIENT_URL, credentials: true }));
-exports.app.use('/api', authRout);
+exports.app.use('/api', authRoute);
 const appStart = () => {
     try {
         exports.app.listen(PORT, () => {

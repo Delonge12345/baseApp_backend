@@ -3,12 +3,15 @@ import express from 'express'
 const client = require("../databasepg");
 const cors = require("cors");
 const {PORT, CLIENT_URL} = require('../constants/index')
-const authRout = require('../routes/authRouter')
+const authRoute = require('../routes/authRouter')
+const cookieParser = require('cookie-parser')
+
 
 // const authRouter = require('../authRouter')
 
 
 export const app = express()
+
 
 
 export const HTTP_CODES = {
@@ -21,13 +24,13 @@ export const HTTP_CODES = {
 }
 
 //middlewares
-const jsonBodyMiddleware = express.json()
-app.use(jsonBodyMiddleware)
+app.use(express.json())
+app.use(cookieParser())
 app.use(cors({origin: CLIENT_URL, credentials: true}))
+app.use('/api', authRoute)
 
 
 
-app.use('/api', authRout)
 
 
 const appStart = () => {
