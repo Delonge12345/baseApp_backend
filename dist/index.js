@@ -5,12 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HTTP_CODES = exports.app = void 0;
 const express_1 = __importDefault(require("express"));
-const client = require("../databasepg");
 const cors = require("cors");
 const { PORT, CLIENT_URL } = require('../constants/index');
-const authRoute = require('../routes/authRouter');
+// const authRoute = require('../routes/authRouter')
 const cookieParser = require('cookie-parser');
-// const authRouter = require('../authRouter')
+const errorMiddleware = require('../middlewares/error-middleware.js');
+const router = require('../router/index');
 exports.app = (0, express_1.default)();
 exports.HTTP_CODES = {
     OK_200: 200,
@@ -23,7 +23,8 @@ exports.HTTP_CODES = {
 exports.app.use(express_1.default.json());
 exports.app.use(cookieParser());
 exports.app.use(cors({ origin: CLIENT_URL, credentials: true }));
-exports.app.use('/api', authRoute);
+exports.app.use('/api', router);
+exports.app.use(errorMiddleware);
 const appStart = () => {
     try {
         exports.app.listen(PORT, () => {
@@ -35,4 +36,3 @@ const appStart = () => {
     }
 };
 appStart();
-// app.use('/auth',authRouter)

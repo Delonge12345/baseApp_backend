@@ -1,13 +1,11 @@
 import express from 'express'
 
-const client = require("../databasepg");
 const cors = require("cors");
 const {PORT, CLIENT_URL} = require('../constants/index')
-const authRoute = require('../routes/authRouter')
+// const authRoute = require('../routes/authRouter')
 const cookieParser = require('cookie-parser')
-
-
-// const authRouter = require('../authRouter')
+const errorMiddleware = require('../middlewares/error-middleware.js')
+const router = require('../router/index')
 
 
 export const app = express()
@@ -27,7 +25,8 @@ export const HTTP_CODES = {
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({origin: CLIENT_URL, credentials: true}))
-app.use('/api', authRoute)
+app.use('/api', router)
+app.use(errorMiddleware)
 
 
 
@@ -44,8 +43,6 @@ const appStart = () => {
 }
 
 appStart()
-
-// app.use('/auth',authRouter)
 
 
 
