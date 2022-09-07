@@ -23,8 +23,9 @@ export const HTTP_CODES = {
 
 //middlewares
 app.use(express.json())
-app.use(cookieParser())
 app.use(cors({origin: CLIENT_URL, credentials: true}))
+app.use(cookieParser())
+
 app.use('/api', router)
 app.use(errorMiddleware)
 
