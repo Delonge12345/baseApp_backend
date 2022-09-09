@@ -19,12 +19,12 @@ exports.getUsers = async (req, res) => {
 
 exports.register = async (req, res) => {
     try {
-        const {email, password} = req.body
+        const {email, password, username} = req.body
         const hashedPassword = await hash(password, 10)
-        await db.query('insert into users(email, password) values ($1 , $2)', [email, hashedPassword])
+        await db.query('insert into users(email, password,username) values ($1 , $2, $3)', [email, hashedPassword, username])
 
         return res.status(201).json({
-            success:true,
+            success: true,
             message: 'The registration was successfull'
         })
     } catch (error) {
@@ -45,11 +45,11 @@ exports.login = async (req, res) => {
 
     try {
 
-        const token = await sign(payload,SECRET)
+        const token = await sign(payload, SECRET)
 
-        return res.status(200).cookie('token', token, {httpOnly:true}).json({
-            success:true,
-            message:'Logged in successfully'
+        return res.status(200).cookie('token', token, {httpOnly: true}).json({
+            success: true,
+            message: 'Logged in successfully'
         })
     } catch (error) {
         console.log(error.message)

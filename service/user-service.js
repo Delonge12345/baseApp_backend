@@ -10,7 +10,7 @@ const {rows} = require("pg/lib/defaults");
 
 class UserService {
 
-    async registration(email, password) {
+    async registration(email, password,username) {
         const {rows} = await db.query('Select * from authUsers WHERE email =$1', [
             email
         ])
@@ -18,14 +18,15 @@ class UserService {
         if (rows.length) {
             throw ApiError.BadRequest('Email already exists')
         }
+
         const hashedPassword = await hash(password, 10)
         const activationLink = uuid.v4()
 
         //save user to database
-        await db.query('insert into authUsers(email, password,activationLink) values ($1 , $2, $3)', [email, hashedPassword, activationLink])
+        await db.query('insert into authUsers(email, password,username,activationLink) values ($1 , $2, $3, $4)', [email, hashedPassword,username, activationLink])
 
         const {rows: gotUser} = await db.query('Select * from authUsers WHERE email =$1', [
-            email
+            email,
         ])
 
         let payload = {
@@ -40,7 +41,8 @@ class UserService {
 
         return {
             ...tokens,
-            email: gotUser[0].email
+            email: gotUser[0].email,
+            username: gotUser[0].username
         }
 
 
