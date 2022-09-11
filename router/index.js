@@ -17,7 +17,7 @@ router.post('/registration',
 router.post('/login', login)
 router.post('/logout', logout)
 router.get('/activate/:link', activate)
-router.get('/refresh', refresh)
+router.post('/refresh', refresh)
 router.get('/users',authMiddleware, getUsers)
 
 module.exports = router

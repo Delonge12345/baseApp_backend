@@ -21,8 +21,11 @@ exports.HTTP_CODES = {
 };
 //middlewares
 exports.app.use(express_1.default.json());
-exports.app.use(cors({ origin: CLIENT_URL, credentials: true }));
 exports.app.use(cookieParser());
+exports.app.use(cors({
+    credentials: true,
+    origin: process.env.CLIENT_URL
+}));
 exports.app.use('/api', router);
 exports.app.use(errorMiddleware);
 const appStart = () => {

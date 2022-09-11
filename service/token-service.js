@@ -24,9 +24,9 @@ class TokenService {
         }
     }
 
-    validateRefreshToken(token) {
+    validateRefreshToken(refreshToken) {
         try {
-            const userData = jwt.verify(token, JWT_REFRESH_SECRET)
+            const userData = jwt.verify(refreshToken, JWT_REFRESH_SECRET)
             return userData
         } catch (e) {
 

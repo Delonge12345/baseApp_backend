@@ -76,6 +76,7 @@ class UserService {
 
         return {
             ...tokens,
+            status:"OK",
             email: rows[0].email
         }
 
@@ -120,9 +121,10 @@ class UserService {
             throw ApiError.UnauthorizedError()
         }
 
+        console.log('userData',userData)
         /******is it user_id here****/
         const {rows} = await db.query('Select * from authUsers WHERE user_id =$1', [
-            userData.user_id
+            userData.id
         ])
         let payload = {
             id: rows[0].user_id,
