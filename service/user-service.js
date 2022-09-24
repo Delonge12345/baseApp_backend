@@ -10,20 +10,20 @@ const {rows} = require("pg/lib/defaults");
 
 class UserService {
 
-    async registration(email, password,username) {
-        const {rows} = await db.query('Select * from authUsers WHERE email =$1', [
-            email
+    async registration(email, password, username, phone) {
+        const {rows} = await db.query('Select * from authUsers WHERE email =$1 OR phone =$2', [
+            email,
+            phone
         ])
-
         if (rows.length) {
-            throw ApiError.BadRequest('Email already exists')
+            throw ApiError.BadRequest('Пользователь уже существует')
         }
 
         const hashedPassword = await hash(password, 10)
         const activationLink = uuid.v4()
 
         //save user to database
-        await db.query('insert into authUsers(email, password,username,activationLink) values ($1 , $2, $3, $4)', [email, hashedPassword,username, activationLink])
+        await db.query('insert into authUsers(email, password,username,phone,activationLink) values ($1 , $2, $3, $4, $5)', [email, hashedPassword, username,phone, activationLink])
 
         const {rows: gotUser} = await db.query('Select * from authUsers WHERE email =$1', [
             email,
@@ -49,19 +49,20 @@ class UserService {
     }
 
 
-    async login(email, password) {
-        const {rows} = await db.query('Select * from authUsers WHERE email =$1', [
-            email
+    async login(email, password, phone) {
+        const {rows} = await db.query('Select * from authUsers WHERE email =$1 OR phone =$2', [
+            email,
+            phone
         ])
 
         if (!rows.length) {
-            throw ApiError.BadRequest('User not found')
+            throw ApiError.BadRequest('Пользователь не найден')
         }
 
         const validPassword = await compare(password, rows[0].password)
 
         if (!validPassword) {
-            throw ApiError.BadRequest('Incorrect password')
+            throw ApiError.BadRequest('Некорректный пароль')
         }
 
 
@@ -76,7 +77,7 @@ class UserService {
 
         return {
             ...tokens,
-            status:"OK",
+            status: "OK",
             email: rows[0].email
         }
 
@@ -121,7 +122,7 @@ class UserService {
             throw ApiError.UnauthorizedError()
         }
 
-        console.log('userData',userData)
+        console.log('userData', userData)
         /******is it user_id here****/
         const {rows} = await db.query('Select * from authUsers WHERE user_id =$1', [
             userData.id

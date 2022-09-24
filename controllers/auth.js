@@ -25,7 +25,7 @@ exports.register = async (req, res) => {
 
         return res.status(201).json({
             success: true,
-            message: 'The registration was successfull'
+            message: 'Регистрация прошла успешно'
         })
     } catch (error) {
         console.log(error.message)
@@ -49,7 +49,7 @@ exports.login = async (req, res) => {
 
         return res.status(200).cookie('token', token, {httpOnly: true}).json({
             success: true,
-            message: 'Logged in successfully'
+            message: 'Вход прошел успешно'
         })
     } catch (error) {
         console.log(error.message)
