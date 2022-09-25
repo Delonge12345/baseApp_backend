@@ -22,7 +22,6 @@ class UserService {
         const hashedPassword = await hash(password, 10)
         const activationLink = uuid.v4()
 
-        console.log('avatar', avatar)
         //save user to database
         await db.query('insert into authUsers(email, password,username,phone,avatar,activationLink) values ($1 , $2, $3, $4, $5, $6)', [email, hashedPassword, username, phone, avatar, activationLink])
 
@@ -50,10 +49,9 @@ class UserService {
     }
 
 
-    async login(email, password, phone) {
-        const {rows} = await db.query('Select * from authUsers WHERE email =$1 OR phone =$2', [
-            email,
-            phone
+    async login(login, password, phone) {
+        const {rows} = await db.query('Select * from authUsers WHERE email =$1 OR phone =$1', [
+            login
         ])
 
         if (!rows.length) {

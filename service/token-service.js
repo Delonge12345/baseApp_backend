@@ -50,16 +50,12 @@ class TokenService {
             return tokenData
         }
 
-        ////////////// Error
+        ////////////// ? Error
         await db.query('insert into authTokens(user_id, refreshtoken) values ($1 , $2)', [userId, refreshToken])
         const {rows: gotToken} = await db.query('Select * from authTokens WHERE refreshtoken =$1', [
             refreshToken
         ])
-        console.log('gotToken', gotToken)
-
         return gotToken[0]
-
-        //////////////////////
     }
 
     async removeToken(refreshToken) {

@@ -14,7 +14,6 @@ class MailService {
     }
 
     async sendActivationMail(to, link) {
-
         await this.transporter.sendMail({
             from: SMTP_USER,
             to,
@@ -28,9 +27,7 @@ class MailService {
                 </div>
             `
         })
-
     }
-
 }
 
 module.exports = new MailService()
