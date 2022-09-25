@@ -16,6 +16,8 @@ create table authUsers(
   isActivated BOOLEAN DEFAULT FALSE,
   activationLink varchar(255) STRING,
   created_at date default current_date
+  phone varchar(255) not null,
+  avatar varchar(255),
 );
 
 

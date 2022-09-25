@@ -2,7 +2,8 @@ const userService = require('../service/user-service.js')
 const {API_URL,CLIENT_URL} = require('../constants')
 const {validationResult} = require('express-validator')
 const ApiError = require('../exceptions/api-error.js')
-
+const fs = require('fs');
+const db = require("../databasepg");
 class UserController {
 
     async registration(req, res, next) {
@@ -13,10 +14,8 @@ class UserController {
             if(!errors.isEmpty()){
                 return next(ApiError.BadRequest('Validation error', errors.array()))
             }
-
-            const {email, password, username, phone} = req.body
-
-            const userData = await userService.registration(email, password, username, phone)
+            const {email, password, username, phone, registerAvatar} = req.body
+            const userData = await userService.registration(email, password, username, phone, registerAvatar)
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
 
             return res.json(userData)
@@ -94,6 +93,26 @@ class UserController {
         } catch (e) {
             next(e)
         }
+    }
+
+
+
+    async updateAvatar(req, res, next) {
+        // try{
+        //
+        //     const {avatar} = req.body
+        //
+        //     //base64 avatar
+        //
+        //     await db.query('insert into authusers(avatar) values ($1)', [avatar])
+        //
+        //     return res.status(200).json({
+        //         status: 'OK'
+        //     })
+        //
+        // }catch(e) {
+        //     next(e)
+        // }
     }
 
 

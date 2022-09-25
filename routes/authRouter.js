@@ -18,6 +18,8 @@ router.post('/register', registerValidation, validationMiddleware, register)
 router.post('/login', loginValidation, validationMiddleware, login)
 
 
+
+
 // router.post('/logout', loginValidation, validationMiddleware, login)
 // router.post('/refresh', refresh)
 module.exports = router
