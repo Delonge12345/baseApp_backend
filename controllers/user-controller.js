@@ -1,9 +1,10 @@
 const userService = require('../service/user-service.js')
-const {API_URL,CLIENT_URL} = require('../constants')
+const {API_URL, CLIENT_URL} = require('../constants')
 const {validationResult} = require('express-validator')
 const ApiError = require('../exceptions/api-error.js')
 const fs = require('fs');
 const db = require("../databasepg");
+
 class UserController {
 
     async registration(req, res, next) {
@@ -11,7 +12,7 @@ class UserController {
 
             const errors = validationResult(req)
 
-            if(!errors.isEmpty()){
+            if (!errors.isEmpty()) {
                 return next(ApiError.BadRequest('Validation error', errors.array()))
             }
             const {email, password, username, phone, registerAvatar} = req.body
@@ -29,7 +30,7 @@ class UserController {
     async login(req, res, next) {
         try {
 
-            const {loginData,password} = req.body
+            const {loginData, password} = req.body
             const userData = await userService.login(loginData, password)
 
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
@@ -95,7 +96,9 @@ class UserController {
         }
     }
 
+    async restoreRequest(req, res, next) {
 
+    }
 
     async updateAvatar(req, res, next) {
         // try{
@@ -113,6 +116,18 @@ class UserController {
         // }catch(e) {
         //     next(e)
         // }
+    }
+
+    async restoreConfirm(req, res, next) {
+        try {
+
+            const activationLink = req.params.link
+            await userService.activate(activationLink)
+            return res.redirect(CLIENT_URL)
+
+        } catch (e) {
+            next(e)
+        }
     }
 
 

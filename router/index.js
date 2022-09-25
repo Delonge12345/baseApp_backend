@@ -6,7 +6,7 @@ const authMiddleware = require('../middlewares/auth-middleware.js')
 const router = new Router()
 
 
-const {registration, login, logout, refresh, activate, getUsers, updateAvatar} = userController
+const {registration, login, logout, refresh, activate, getUsers, updateAvatar,restoreRequest,restoreConfirm} = userController
 
 router.post('/registration',
     body('email').isEmail(),
@@ -20,6 +20,13 @@ router.get('/activate/:link', activate)
 router.post('/refresh', refresh)
 router.get('/users',authMiddleware, getUsers)
 router.post('/setAvatar',updateAvatar)
+
+router.post('/restoreRequest',restoreRequest)
+
+
+router.post('/restoreConfirm',restoreConfirm)
+
+
 
 
 module.exports = router

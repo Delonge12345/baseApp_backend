@@ -17,7 +17,7 @@ class MailService {
         await this.transporter.sendMail({
             from: SMTP_USER,
             to,
-            subject: 'Account activation' + API_URL,
+            subject: 'Restore password' + API_URL,
             test: '',
             html:
                 `

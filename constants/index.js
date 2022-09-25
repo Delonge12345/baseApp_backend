@@ -8,4 +8,5 @@ module.exports = {
     SECRET: process.env.SECRET,
     JWT_ACCESS_SECRET : process.env.JWT_ACCESS_SECRET,
     JWT_REFRESH_SECRET : process.env.JWT_REFRESH_SECRET,
+    API_URL: process.env.API_URL
 }

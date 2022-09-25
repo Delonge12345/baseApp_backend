@@ -120,8 +120,6 @@ class UserService {
         if (!userData || !tokenFromDB) {
             throw ApiError.UnauthorizedError()
         }
-
-        console.log('userData', userData)
         /******is it user_id here****/
         const {rows} = await db.query('Select * from authUsers WHERE user_id =$1', [
             userData.id
@@ -140,14 +138,11 @@ class UserService {
         }
 
     }
-
     async getAllUsers() {
         const {rows} = await db.query('Select * from authUsers')
 
         return rows
     }
-
-
 }
 
 module.exports = new UserService()
