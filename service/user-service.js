@@ -110,9 +110,6 @@ class UserService {
         if (!rows.length) {
             throw  ApiError.BadRequest('Пользователь не существует')
         }
-
-        console.log('rows[0]',rows[0].activationlink)
-
         await mailService.sendActivationMail(email,`${process.env.CLIENT_URL}/restore/:${rows[0].activationlink}`)
 
         // await db.query('UPDATE authUsers SET isActivated = $s1  WHERE activationLink =$2', [
