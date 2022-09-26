@@ -8,7 +8,7 @@ create table authusers(
   username varchar(255),
   created_at date default current_date,
   phone varchar(255) not null,
-  avatar varchar(255)
+  avatar varchar
 );
 
 --token

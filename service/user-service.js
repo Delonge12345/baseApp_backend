@@ -15,6 +15,7 @@ class UserService {
             email,
             phone
         ])
+
         if (rows.length) {
             throw ApiError.BadRequest('Пользователь уже существует')
         }
