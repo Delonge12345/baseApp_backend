@@ -1,5 +1,5 @@
 const userService = require('../service/user-service.js')
-const {API_URL, CLIENT_URL} = require('../constants')
+const {CLIENT_URL} = require('../constants')
 const {validationResult} = require('express-validator')
 const ApiError = require('../exceptions/api-error.js')
 const fs = require('fs');
@@ -139,7 +139,7 @@ class UserController {
     async restoreConfirm(req, res, next) {
         try {
 
-          const{link, password} = req.body
+            const {link, password} = req.body
             await userService.updatePassword(link, password)
 
             return res.status(200).json({

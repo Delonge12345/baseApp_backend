@@ -3,22 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HTTP_CODES = exports.app = void 0;
+exports.app = void 0;
 const express_1 = __importDefault(require("express"));
 const cors = require("cors");
-const { PORT, CLIENT_URL } = require('../constants/index');
-// const authRoute = require('../routes/authRouter')
+const { PORT } = require('../constants/index');
 const cookieParser = require('cookie-parser');
 const errorMiddleware = require('../middlewares/error-middleware.js');
 const router = require('../router/index');
 exports.app = (0, express_1.default)();
-exports.HTTP_CODES = {
-    OK_200: 200,
-    CREATED_201: 201,
-    NO_CONTENT_204: 204,
-    BAD_REQUEST_400: 400,
-    NOT_FOUND_404: 404,
-};
 //middlewares
 exports.app.use(express_1.default.json());
 exports.app.use(cookieParser());

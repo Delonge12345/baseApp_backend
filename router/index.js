@@ -16,17 +16,10 @@ router.post('/registration',
 
 router.post('/login', login)
 router.post('/logout', logout)
-router.get('/activate/:link', activate)
 router.post('/refresh', refresh)
 router.get('/users',authMiddleware, getUsers)
 router.post('/setAvatar',updateAvatar)
-
 router.post('/restoreRequest',restoreRequest)
-
-
 router.post('/restoreConfirm',restoreConfirm)
-
-
-
 
 module.exports = router

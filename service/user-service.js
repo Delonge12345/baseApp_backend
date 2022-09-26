@@ -3,15 +3,13 @@ const {hash, compare} = require("bcryptjs");
 const uuid = require('uuid')
 const mailService = require('./mail-service.js')
 const tokenService = require('./token-service.js')
-const {API_URL} = require('../constants')
 const ApiError = require('../exceptions/api-error.js')
-const {rows} = require("pg/lib/defaults");
 
 
 class UserService {
-
     async registration(email, password, username, phone, avatar) {
-        const {rows} = await db.query('Select * from authUsers WHERE email =$1 OR phone =$2', [
+        console.log('DATA', email, phone)
+        const {rows} = await db.query('Select * from authUsers WHERE email=$1 OR phone=$2', [
             email,
             phone
         ])
@@ -26,7 +24,7 @@ class UserService {
         //save user to database
         await db.query('insert into authUsers(email, password,username,phone,avatar,activationLink) values ($1 , $2, $3, $4, $5, $6)', [email, hashedPassword, username, phone, avatar, activationLink])
 
-        const {rows: gotUser} = await db.query('Select * from authUsers WHERE email =$1', [
+        const {rows: gotUser} = await db.query('Select * from authUsers WHERE email=$1', [
             email,
         ])
 
@@ -45,8 +43,6 @@ class UserService {
             email: gotUser[0].email,
             username: gotUser[0].username
         }
-
-
     }
 
 
@@ -88,7 +84,6 @@ class UserService {
         const {rows} = await db.query('Select * from authUsers WHERE activationLink =$1', [
             activationLink
         ])
-
         if (!rows.length) {
             throw  ApiError.BadRequest('Incorrect activation link')
         }
@@ -101,7 +96,6 @@ class UserService {
     }
 
 
-
     async restorePassword(email) {
         const {rows} = await db.query('Select * from authUsers WHERE email =$1', [
             email
@@ -110,19 +104,13 @@ class UserService {
         if (!rows.length) {
             throw  ApiError.BadRequest('Пользователь не существует')
         }
-        await mailService.sendActivationMail(email,`${process.env.CLIENT_URL}/restore/:${rows[0].activationlink}`)
-
-        // await db.query('UPDATE authUsers SET isActivated = $s1  WHERE activationLink =$2', [
-        //     true,
-        //     activationLink
-        // ])
-
+        await mailService.sendActivationMail(email, `${process.env.CLIENT_URL}/restore/:${rows[0].activationlink}`)
     }
 
     async updatePassword(link, password) {
 
 
-        console.log('password',password)
+        console.log('password', password)
         const {rows} = await db.query('Select * from authusers WHERE activationlink =$1', [
             link
         ])
@@ -137,17 +125,12 @@ class UserService {
             hashedPassword,
             link
         ])
-
-
     }
 
 
-
     async logout(refreshToken) {
-
         const token = await tokenService.removeToken(refreshToken)
         return token
-
     }
 
     async refresh(refreshToken) {
@@ -179,11 +162,10 @@ class UserService {
             ...tokens,
             email: rows[0].email
         }
-
     }
+
     async getAllUsers() {
         const {rows} = await db.query('Select * from authUsers')
-
         return rows
     }
 }

@@ -16,7 +16,6 @@ exports.getUsers = async (req, res) => {
     }
 }
 
-
 exports.register = async (req, res) => {
     try {
         const {email, password, username} = req.body
@@ -34,7 +33,6 @@ exports.register = async (req, res) => {
         })
     }
 }
-
 
 exports.login = async (req, res) => {
     let user = req.user
@@ -58,35 +56,3 @@ exports.login = async (req, res) => {
         })
     }
 }
-
-
-// exports.logout = async (req, res, next) => {
-//
-//
-//     try {
-//         const {refreshToken} = req.cookies
-//         const token = await userService.logout(refreshToken)
-//         res.clearCookie('refreshToken')
-//         return res.json(token)
-//
-//     } catch (error) {
-//         next(error)
-//     }
-// }
-//
-//
-//
-//
-// exports.refresh = async (req, res, next) => {
-//
-//
-//     try {
-//         const {refreshToken} = req.cookies
-//         const userData = await userService.refresh(refreshToken)
-//         res.cookie('refreshToken', userData.refreshToken, {maxAge: 30*24*60*1000, httpOnly:true})
-//         return res.json(userData)
-//
-//     } catch (error) {
-//       next(e)
-//     }
-// }
