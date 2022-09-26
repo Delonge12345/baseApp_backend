@@ -100,6 +100,51 @@ class UserService {
     }
 
 
+
+    async restorePassword(email) {
+        const {rows} = await db.query('Select * from authUsers WHERE email =$1', [
+            email
+        ])
+
+        if (!rows.length) {
+            throw  ApiError.BadRequest('Пользователь не существует')
+        }
+
+        console.log('rows[0]',rows[0].activationlink)
+
+        await mailService.sendActivationMail(email,`${process.env.CLIENT_URL}/restore/:${rows[0].activationlink}`)
+
+        // await db.query('UPDATE authUsers SET isActivated = $s1  WHERE activationLink =$2', [
+        //     true,
+        //     activationLink
+        // ])
+
+    }
+
+    async updatePassword(link, password) {
+
+
+        console.log('password',password)
+        const {rows} = await db.query('Select * from authusers WHERE activationlink =$1', [
+            link
+        ])
+
+        if (!rows.length) {
+            throw  ApiError.BadRequest('Пользователь не существует')
+        }
+
+        const hashedPassword = await hash(password, 10)
+
+        await db.query('UPDATE authusers SET password = $1  WHERE activationlink =$2', [
+            hashedPassword,
+            link
+        ])
+
+
+    }
+
+
+
     async logout(refreshToken) {
 
         const token = await tokenService.removeToken(refreshToken)

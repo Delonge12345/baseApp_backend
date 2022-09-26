@@ -5,11 +5,14 @@ class MailService {
 
     constructor() {
         this.transporter = nodeMailer.createTransport({
+            service: 'gmail',
             host: SMTP_HOST,
             port: SMTP_PORT,
             secure: false,
-            auth: SMTP_USER,
-            pass: SMTP_PASSWORD
+            auth: {
+                user: SMTP_USER,
+                pass: SMTP_PASSWORD,
+            },
         })
     }
 
@@ -18,7 +21,8 @@ class MailService {
             from: SMTP_USER,
             to,
             subject: 'Restore password' + API_URL,
-            test: '',
+            text: '',
+
             html:
                 `
                 <div> 

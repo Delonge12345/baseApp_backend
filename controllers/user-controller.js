@@ -97,6 +97,23 @@ class UserController {
     }
 
     async restoreRequest(req, res, next) {
+        try {
+
+            const {email} = req.body
+            await userService.restorePassword(email)
+
+            return res.status(200).json({
+                success: true,
+                status: 'OK'
+            })
+
+        } catch (e) {
+            return res.status(500).json({
+                success: false,
+                status: 'ERROR'
+            })
+            next(e)
+        }
 
     }
 
@@ -121,11 +138,20 @@ class UserController {
     async restoreConfirm(req, res, next) {
         try {
 
-            const activationLink = req.params.link
-            await userService.activate(activationLink)
-            return res.redirect(CLIENT_URL)
+          const{link, password} = req.body
+            await userService.updatePassword(link, password)
+
+            return res.status(200).json({
+                success: true,
+                status: 'OK'
+            })
 
         } catch (e) {
+            console.log('ERROR', e.message)
+            return res.status(500).json({
+                success: false,
+                status: 'ERROR'
+            })
             next(e)
         }
     }
